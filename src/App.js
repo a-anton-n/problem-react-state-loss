@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 function Home() {
   return (
@@ -10,22 +10,28 @@ function Home() {
 
 function Page1() {
   const [ processId, setProcessId ] = useState(null);
+  const idRef = useRef();
 
   const getExternalProcessId = () => {
     // return Math.floor(Math.random() * 10000) + 1;
     return 'abc123';
   }
 
-  const stopExternalProcess= (processId) => {
-    alert(`stopping process ${processId}`);
+  const stopExternalProcess = (idCurrent) => {
+    console.log('stopExternalProcess, idCurrent = ', idCurrent);
+    alert(`stopping process ${idCurrent}`);
   }
 
   useEffect(() => {
     // Anything in here is fired on component mount.
     setProcessId( getExternalProcessId() );
+    idRef.current = getExternalProcessId()
     return () => {
       // Anything in here is fired on component unmount ()
-      stopExternalProcess(processId);
+      // stopExternalProcess(processId);
+      console.log('processId = ', processId);
+      console.log('idRef = ', idRef.current);
+      stopExternalProcess(idRef.current);
     }
   }, []);
 
@@ -35,6 +41,7 @@ function Page1() {
         Page With Action
       </h1>
       <h2>Executing process id: {processId}</h2>
+      <h2>idRef: {processId}</h2>
     </div>
   );
 }
